@@ -62,10 +62,10 @@ import arcpy.cartography as CA
 # Allow output file to overwrite any existing file of the same name
 arcpy.env.overwriteOutput = True
 
-# defines required functions
-# translate function maps raw score outputs to 1-100
+
 def translate(value, oldMin, oldMax, newMin, newMax):
-    # Figure out how 'wide' each range is
+    ''' maps any value range to 1-100 range'''
+
     leftSpan = oldMax - oldMin
     rightSpan = newMax - newMin
 
@@ -75,8 +75,10 @@ def translate(value, oldMin, oldMax, newMin, newMax):
     # Convert the 0-1 range into a value in the right range.
     return newMin + (valueScaled * rightSpan)
 
-# preserve function simulates preserving the parcels with the highest score
+
 def preserve(ScoreField):
+    '''Changes boolean "preservation status" of the parcels with the highest score'''
+
     arcpy.AddMessage("Preserving " + str(NumPreserve) + " Parcels")
     # list all scores and take the highest ones (based on user-specified number)
     FieldValues = arcpy.da.SearchCursor(UnpreservedParcels_Output, ScoreField)
@@ -100,6 +102,7 @@ def preserve(ScoreField):
     # Delete row and update cursor objects to avoid locking attribute table
     del cur
     del CurrentRow
+
 
 try:
 
